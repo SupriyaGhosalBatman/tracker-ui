@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme: Theme) =>
   },[yearName, month]);
 
   const callExpenseForParticularMonth = () =>  {
-    axios.get('http://localhost:8080/v1/expense/expensetypechartpermonth/'
+    axios.get('http://13.232.235.141:8080/v1/expense/expensetypechartpermonth/'
     + userId+'/'+yearName +"-"+month +"-"+'30')
     .then(response => {     
       setState1(response.data);
@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }
 
   const callExpenseForParticularExpenseType = () =>  {
-    axios.get('http://localhost:8080/v1/expense/expnspertypeinayear/'
+    axios.get('http://13.232.235.141:8080/v1/expense/expnspertypeinayear/'
     + userId+'/'+yearName +"-"+month +"-"+'30'+ '/'+ expenseTypeData)
     .then(response => { 
       setState1(response.data);
@@ -151,7 +151,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }
 
   const handleGraphChange = (event) =>{
-    axios.get('http://localhost:8080/v1/expense/expnsincminayear/'+
+    axios.get('http://13.232.235.141:8080/v1/expense/expnsincminayear/'+
     userId +'/'+yearName )
     .then(response => {     
       setState1(response.data);
@@ -183,7 +183,7 @@ const useStyles = makeStyles((theme: Theme) =>
   const handleExpenseChange = (event) =>{
     setExpenseTypeData(event.target.value);
     console.log("expense type : ", event.target.value);
-    axios.get('http://localhost:8080/v1/expense/expnspertypeinayear/'
+    axios.get('http://13.232.235.141:8080/v1/expense/expnspertypeinayear/'
     + userId+'/'+yearName + '/'+ event.target.value)
     .then(response => {     
       setState1(response.data);
