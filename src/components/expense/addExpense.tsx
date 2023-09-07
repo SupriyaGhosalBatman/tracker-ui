@@ -163,7 +163,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
   }
     
     console.log("year is : ", event.target.value);
-    axios.get('http://localhost:8080/v1/helper/getallexpense/' + userId +'/'
+    axios.get('http://13.232.235.141:8080/v1/helper/getallexpense/' + userId +'/'
     + yearName + '/' + month)
       .then(response => {
         setState(response.data);
@@ -176,7 +176,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
   };
 
   const [state, setState] = React.useState([]);
-  var baseUrl = 'http://localhost:8080/v1/expense/addexpense';
+  var baseUrl = 'http://13.232.235.141:8080/v1/expense/addexpense';
 
   function refresh() {
     if(month===" " || month===null){
@@ -185,7 +185,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     if(yearName===" " || yearName===null){
       month=localStorage.getItem('yearName');
     }
-    axios.get('http://localhost:8080/v1/expense/getallexpense/'+ userId+'/'+
+    axios.get('http://13.232.235.141:8080/v1/expense/getallexpense/'+ userId+'/'+
      yearName+"-"+ month+"-"+'30')
       .then(response => {
         setState(response.data);
@@ -216,7 +216,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     localStorage.setItem("month","");
     localStorage.setItem("monthlyExpenseTrackerId", "");
     localStorage.setItem("monthlyIncomeTrackerId", "");
-    axios.get('http://localhost:8080/v1/helper/getinitialdata/1')
+    axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
     .then(response => {
         //setState(response.data);
         console.log("refresh response : ", response.data);
@@ -274,7 +274,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     localStorage.setItem("month","");
     localStorage.setItem("monthlyExpenseTrackerId", "");
     localStorage.setItem("monthlyIncomeTrackerId", "");
-    axios.get('http://localhost:8080/v1/helper/getinitialdata/1')
+    axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
     .then(response => {
         //(response.data);
         console.log("setExpenseDetailsInLocalStorage response : ", response.data);
