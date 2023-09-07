@@ -95,7 +95,7 @@ export default function AddIncome({yearName, month, userId,monthlyExpenseTracker
     const handleChange2 = (event) => {
       setYear(event.target.value);  
       console.log("year is : ",event.target.value);
-      axios.get('http://localhost:8080/v1/helper/getallincome/'+userId+'/'
+      axios.get('http://13.232.235.141:8080/v1/helper/getallincome/'+userId+'/'
       +yearName+'/'+month)
     .then(response => {     
       setState(response.data);
@@ -107,7 +107,7 @@ export default function AddIncome({yearName, month, userId,monthlyExpenseTracker
   };
 
 const [state, setState] = React.useState([]);
-  var baseUrl = 'http://localhost:8080/v1/expense/addincome';
+  var baseUrl = 'http://13.232.235.141:8080/v1/expense/addincome';
  
   function refresh(){
     if(month===" " || month===null){
@@ -116,7 +116,7 @@ const [state, setState] = React.useState([]);
      if(yearName===" " || yearName===null){
       month=localStorage.getItem('yearName');
     }
-    axios.get('http://localhost:8080/v1/expense/getallincome/'+userId+'/'+
+    axios.get('http://13.232.235.141:8080/v1/expense/getallincome/'+userId+'/'+
     yearName +"-"+month +"-"+'30')
     .then(response => {     
       setState(response.data);
@@ -138,7 +138,7 @@ const [state, setState] = React.useState([]);
     localStorage.setItem("month","");
     localStorage.setItem("monthlyExpenseTrackerId", "");
     localStorage.setItem("monthlyIncomeTrackerId", "");
-    axios.get('http://localhost:8080/v1/helper/getinitialdata/1')
+    axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
     .then(response => {
         //setState(response.data);
         console.log("refresh response : ", response.data);
@@ -194,7 +194,7 @@ const [state, setState] = React.useState([]);
         localStorage.setItem("month","");
         localStorage.setItem("monthlyExpenseTrackerId", "");
         localStorage.setItem("monthlyIncomeTrackerId", "");
-        axios.get('http://localhost:8080/v1/helper/getinitialdata/1')
+        axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
         .then(response => {
             //(response.data);
             console.log("setIncomeDetailsInLocalStorage response : ", response.data);
