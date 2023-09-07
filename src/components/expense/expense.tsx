@@ -72,7 +72,7 @@ export default function Expense({yearName, month, userId,monthlyExpenseTrackerId
         if(yearName===" " || yearName===null){
             month=localStorage.getItem('yearName');
         }
-        axios.get('http://localhost:8080/v1/helper/getexpensesaving/'+userId+'/'
+        axios.get('http://13.232.235.141:8080/v1/helper/getexpensesaving/'+userId+'/'
         +month+'/'+yearName)
         .then(response => {     
             setSavings(response.data.savings);
