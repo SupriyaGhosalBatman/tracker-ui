@@ -72,7 +72,7 @@ export default function Income({yearName, month, userId,monthlyExpenseTrackerId,
         month=localStorage.getItem('yearName');
     }
     useEffect(() => {
-        axios.get('http://localhost:8080/v1/helper/getexpensesaving/'+userId +
+        axios.get('http://13.232.235.141:8080/v1/helper/getexpensesaving/'+userId +
         '/'+ month +'/'+yearName )
         .then(response => {     
             setSavings(response.data.savings);
