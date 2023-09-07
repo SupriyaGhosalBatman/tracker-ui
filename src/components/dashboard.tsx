@@ -311,7 +311,7 @@ export default function Dashboard(props: any) {
     }, [])
 
     function fetchTotalExpenseIncome(){
-      axios.get('http://localhost:8080/v1/helper/getexpensesaving/'+  localStorage.getItem('userId') +
+      axios.get('http://13.232.235.141:8080/v1/helper/getexpensesaving/'+  localStorage.getItem('userId') +
       '/'+ localStorage.getItem('month') +'/'+localStorage.getItem('yearName')  )
       .then(response => {     
         localStorage.setItem("Income",response.data.income);
@@ -335,7 +335,7 @@ export default function Dashboard(props: any) {
            //  localStorage.setItem("userId", "");
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/v1/helper/getnewinitialdata/1',
+                url: 'http://13.232.235.141:8080/v1/helper/getnewinitialdata/1',
                 data: incomeObj,
                 }).then(response =>{ 
                     setState([]);
@@ -360,7 +360,7 @@ export default function Dashboard(props: any) {
             // localStorage.setItem("month","");
             // localStorage.setItem("monthlyExpenseTrackerId", "");
             // localStorage.setItem("monthlyIncomeTrackerId", "");
-            axios.get('http://localhost:8080/v1/helper/getinitialdata/1')
+            axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
             .then(response => {
                 setState(response.data);
                 console.log("refresh response : ", response.data);
