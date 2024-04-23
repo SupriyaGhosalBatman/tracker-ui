@@ -2,7 +2,7 @@ import Chart from "react-apexcharts";
 import React, { useState, useEffect } from 'react';
 import { makeStyles, Theme, createStyles } from "@material-ui/core";
 import axios from 'axios';
-
+import {END_POINT} from './constant/constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: '5%',
             marginLeft: '-10%',
         },
+        expenseDetails :{
+          marginLeft: '-5%'
+      },
         heading2:{
             height: '24%',
             width: '90%',
@@ -39,6 +42,12 @@ const useStyles = makeStyles((theme: Theme) =>
   export default function Chartdemo({yearName, month, userId,monthlyExpenseTrackerId}) {
     const [barData, setBarData] = useState([]);
     const [expenseTypeData, setExpenseTypeData] = useState(null);
+    const [yearlyIncome, setYearlyIncome] = useState(null);
+    const [yearlyExpense, setYearlyExpense] = useState(null);
+    const [yearlySaving, setYearlySaving] = useState(null);
+    const [overAllIncome, setOverAllIncome] = useState(null);
+    const [overAllExpense, setOverAllExpense] = useState(null);
+    const [overAllSaving, setOverAllSaving] = useState(null);
     const classes = useStyles();
     const [graphs] = React.useState([
       { label: "expenses in current month", value: "perMonthEexpense"},
@@ -115,11 +124,13 @@ const useStyles = makeStyles((theme: Theme) =>
    const [state1, setState1] = React.useState([]);
    const [graphType, setGraphType] = React.useState(false);
    useEffect(() => {
-    callExpenseForParticularMonth();  
+    callExpenseForParticularMonth(); 
+    callYearlyExpenseIncomeForParticularUser(); 
+    callOverAllExpenseIncomeForParticularUser();
   },[yearName, month]);
 
   const callExpenseForParticularMonth = () =>  {
-    axios.get('http://13.232.235.141:8080/v1/expense/expensetypechartpermonth/'
+    axios.get(END_POINT+'/v1/expense/expensetypechartpermonth/'
     + userId+'/'+yearName +"-"+month +"-"+'30')
     .then(response => {     
       setState1(response.data);
@@ -134,8 +145,39 @@ const useStyles = makeStyles((theme: Theme) =>
       console.log(error);}) 
   }
 
+  const callYearlyExpenseIncomeForParticularUser = () =>  {
+    axios.get(END_POINT+'/v1/helper/getyearlyexpnsincomdata/'
+    + userId+'/'+yearName)
+    .then(response => {     
+      //setState1(response.data);
+     
+      console.log("Yearly income expense data : ",response.data);
+      setYearlyIncome(response.data.totalIncome);
+      setYearlyExpense(response.data.totalExpense);
+      setYearlySaving(response.data.totalSavings);
+    })
+    .catch(error => {
+      console.log(error);}) 
+  }
+
+  const callOverAllExpenseIncomeForParticularUser = () =>  {
+    axios.get(END_POINT+'/v1/helper/getoverallexpnsincomdata/'
+    + userId)
+    .then(response => {     
+      //setState1(response.data);
+     
+      console.log("Over all income expense data : ",response.data);
+      setOverAllIncome(response.data.allIncome);
+      setOverAllExpense(response.data.allExpense);
+      setOverAllSaving(response.data.allSavings);
+      
+    })
+    .catch(error => {
+      console.log(error);}) 
+  }
+
   const callExpenseForParticularExpenseType = () =>  {
-    axios.get('http://13.232.235.141:8080/v1/expense/expnspertypeinayear/'
+    axios.get(END_POINT+'/v1/expense/expnspertypeinayear/'
     + userId+'/'+yearName +"-"+month +"-"+'30'+ '/'+ expenseTypeData)
     .then(response => { 
       setState1(response.data);
@@ -151,7 +193,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }
 
   const handleGraphChange = (event) =>{
-    axios.get('http://13.232.235.141:8080/v1/expense/expnsincminayear/'+
+    axios.get(END_POINT+'/v1/expense/expnsincminayear/'+
     userId +'/'+yearName )
     .then(response => {     
       setState1(response.data);
@@ -183,7 +225,7 @@ const useStyles = makeStyles((theme: Theme) =>
   const handleExpenseChange = (event) =>{
     setExpenseTypeData(event.target.value);
     console.log("expense type : ", event.target.value);
-    axios.get('http://13.232.235.141:8080/v1/expense/expnspertypeinayear/'
+    axios.get(END_POINT+'/v1/expense/expnspertypeinayear/'
     + userId+'/'+yearName + '/'+ event.target.value)
     .then(response => {     
       setState1(response.data);
@@ -230,7 +272,15 @@ const useStyles = makeStyles((theme: Theme) =>
               ))}
            </select>
            </div> : null }
-           
+           <div >
+             <h1 style={{marginLeft: "1%", fontSize: "1.2rem"}}>Current Year</h1>
+             <h1 style={{marginLeft: "5%", fontSize: "1.0rem"}}>Total Spend : {yearlyExpense}</h1>
+             <h1 style={{marginLeft: "20%", marginTop:"-2.7%", fontSize: "1.0rem"}}>Total Income: {yearlyIncome}</h1>
+             <h1 style={{marginLeft: "37%", marginTop:"-2.7%", fontSize: "1.0rem"}}>Total Saving: {yearlySaving}</h1>
+             <h1 style={{marginLeft: "52%", marginTop:"-6.2%", fontSize: "1.2rem"}}>OverAll</h1>
+             <h1 style={{marginLeft: "55%", marginTop:"0.3%", fontSize: "1.0rem"}}>OverAll Income: {overAllIncome}</h1>
+             <h1 style={{marginLeft: "75%", marginTop:"-2.75%", fontSize: "1.0rem"}}>OverAll Saving: {overAllSaving}</h1>
+             </div>
         <Chart
           options={state.options}
           series={state.series}

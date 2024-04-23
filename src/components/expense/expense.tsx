@@ -4,6 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddExpense from './addExpense';
 import axios from 'axios';
+import {END_POINT} from '../constant/constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -72,7 +73,7 @@ export default function Expense({yearName, month, userId,monthlyExpenseTrackerId
         if(yearName===" " || yearName===null){
             month=localStorage.getItem('yearName');
         }
-        axios.get('http://13.232.235.141:8080/v1/helper/getexpensesaving/'+userId+'/'
+        axios.get(END_POINT+'/v1/helper/getexpensesaving/'+userId+'/'
         +month+'/'+yearName)
         .then(response => {     
             setSavings(response.data.savings);

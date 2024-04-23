@@ -8,6 +8,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Alert } from 'react-alert';
 import {createMuiTheme} from '@material-ui/core/styles';
 import { styled, createTheme, ThemeProvider } from "@mui/system";
+import {END_POINT} from '../constant/constants';
 // import { IgrDataGrid, IgrTextColumn } from 'igniteui-react-grids';
 //import MonthDropDown from './monthDropDown';
 
@@ -163,7 +164,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
   }
     
     console.log("year is : ", event.target.value);
-    axios.get('http://13.232.235.141:8080/v1/helper/getallexpense/' + userId +'/'
+    axios.get(END_POINT+'/v1/helper/getallexpense/' + userId +'/'
     + yearName + '/' + month)
       .then(response => {
         setState(response.data);
@@ -176,7 +177,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
   };
 
   const [state, setState] = React.useState([]);
-  var baseUrl = 'http://13.232.235.141:8080/v1/expense/addexpense';
+  var baseUrl = END_POINT+'/v1/expense/addexpense';
 
   function refresh() {
     if(month===" " || month===null){
@@ -185,7 +186,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     if(yearName===" " || yearName===null){
       month=localStorage.getItem('yearName');
     }
-    axios.get('http://13.232.235.141:8080/v1/expense/getallexpense/'+ userId+'/'+
+    axios.get(END_POINT+'/v1/expense/getallexpense/'+ userId+'/'+
      yearName+"-"+ month+"-"+'30')
       .then(response => {
         setState(response.data);
@@ -216,7 +217,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     localStorage.setItem("month","");
     localStorage.setItem("monthlyExpenseTrackerId", "");
     localStorage.setItem("monthlyIncomeTrackerId", "");
-    axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
+    axios.get(END_POINT+'/v1/helper/getinitialdata/1')
     .then(response => {
         //setState(response.data);
         console.log("refresh response : ", response.data);
@@ -252,7 +253,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     expenseObj.amount = fields.amount;
     expenseObj.date = fields.date;
     expenseObj.details = fields.details;
-    console.log(expenseObj);
+    console.log("submitting expense object : "+expenseObj.monthlyExpenseTrackerId);
     axios({
       method: 'post',
       url: baseUrl,
@@ -274,7 +275,7 @@ export default function AddExpense({yearName, month, userId,monthlyExpenseTracke
     localStorage.setItem("month","");
     localStorage.setItem("monthlyExpenseTrackerId", "");
     localStorage.setItem("monthlyIncomeTrackerId", "");
-    axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
+    axios.get(END_POINT+'/v1/helper/getinitialdata/1')
     .then(response => {
         //(response.data);
         console.log("setExpenseDetailsInLocalStorage response : ", response.data);

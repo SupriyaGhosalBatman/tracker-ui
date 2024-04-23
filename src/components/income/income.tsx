@@ -4,6 +4,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import AddIncome from './addIncome';
 import axios from 'axios';
+import {END_POINT} from '../constant/constants';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -72,7 +73,7 @@ export default function Income({yearName, month, userId,monthlyExpenseTrackerId,
         month=localStorage.getItem('yearName');
     }
     useEffect(() => {
-        axios.get('http://13.232.235.141:8080/v1/helper/getexpensesaving/'+userId +
+        axios.get(END_POINT+'/v1/helper/getexpensesaving/'+userId +
         '/'+ month +'/'+yearName )
         .then(response => {     
             setSavings(response.data.savings);

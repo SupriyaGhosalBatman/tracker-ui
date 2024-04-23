@@ -6,7 +6,7 @@ import IconDetails from "../utils/IconDetails";
 import SearchIcon from '@material-ui/icons/Search';
 import HeadsetMicIcon from '@material-ui/icons/HeadsetMic';
 import ForumIcon from '@material-ui/icons/Forum';
-import ExpenseTracker from '../assets/images/expense-tracker.png'
+import ExpenseTracker from '../assets/images/expense-tracker.png';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import AccountTreeRoundedIcon from '@material-ui/icons/AccountTreeRounded';
 import EventRoundedIcon from '@material-ui/icons/EventRounded';
@@ -16,6 +16,8 @@ import Chartdemo from './chartdemo';
 import axios from 'axios';
 import Expense from '../components/expense/expense';
 import Income from '../components/income/income';
+import {END_POINT} from './constant/constants';
+import AllTracker from "./alltracker/allTracker";
 
 let drawerWidth = 140;
 
@@ -130,8 +132,8 @@ const navigation = {
     "3": {
         "sortOrder": "3",
         "icon": "EventRounded",
-        "displayName": "EMI",
-        "path": "/emi-details"
+        "displayName": "All Savings",
+        "path": "/overall-tracker"
     },
     "4": {
         "sortOrder": "4",
@@ -305,20 +307,25 @@ export default function Dashboard(props: any) {
         // history.push("/dashboard")
         //handleChange();
         //handleChangeYear();
-        refresh();
-        fetchTotalExpenseIncome();
-         //refreshLocalStorage();
+        //refresh();
+        //fetchTotalExpenseIncome();
+         refreshLocalStorage();
     }, [])
 
     function fetchTotalExpenseIncome(){
-      axios.get('http://13.232.235.141:8080/v1/helper/getexpensesaving/'+  localStorage.getItem('userId') +
+      axios.get(END_POINT+'/v1/helper/getexpensesaving/'+  localStorage.getItem('userId') +
       '/'+ localStorage.getItem('month') +'/'+localStorage.getItem('yearName')  )
       .then(response => {     
-        localStorage.setItem("Income",response.data.income);
-        localStorage.setItem("Savings", response.data.savings);
-        localStorage.setItem("Expense", response.data.expense);
+        localStorage.setItem("Income", (response.data!=null || response.data!=[])
+         && (response.data.income!=null && response.data.income!='') 
+        ?  response.data.income : '');
+        localStorage.setItem("Savings",  (response.data!=null || response.data!=[])
+        && (response.data.savings!=null && response.data.savings!='') 
+       ?  response.data.savings : '');
+        localStorage.setItem("Expense",(response.data!=null || response.data!=[])
+        && ( response.data.expense !=null &&  response.data.expense !='') 
+       ?  response.data.expense : '');
         console.log("Savings : ", response.data.savings);
-        console.log("Income : ",response.data.income);
       })
       .catch(error => {
         console.log(error);}) 
@@ -335,7 +342,7 @@ export default function Dashboard(props: any) {
            //  localStorage.setItem("userId", "");
             axios({
                 method: 'post',
-                url: 'http://13.232.235.141:8080/v1/helper/getnewinitialdata/1',
+                url: END_POINT+'/v1/helper/getnewinitialdata/1',
                 data: incomeObj,
                 }).then(response =>{ 
                     setState([]);
@@ -354,13 +361,15 @@ export default function Dashboard(props: any) {
                 }) .catch(error => {
                     console.log("after axios call ",error);
                 })
+                fetchTotalExpenseIncome();
     }
     function refresh() {
-            // localStorage.setItem("yearName", "");
+           
+        // localStorage.setItem("yearName", "");
             // localStorage.setItem("month","");
             // localStorage.setItem("monthlyExpenseTrackerId", "");
             // localStorage.setItem("monthlyIncomeTrackerId", "");
-            axios.get('http://13.232.235.141:8080/v1/helper/getinitialdata/1')
+            axios.get(END_POINT+'/v1/helper/getinitialdata/1')
             .then(response => {
                 setState(response.data);
                 console.log("refresh response : ", response.data);
@@ -528,6 +537,7 @@ export default function Dashboard(props: any) {
                         <Chartdemo yearName={localStorage.getItem('yearName')}
                         month={localStorage.getItem('month')} userId={localStorage.getItem('userId')}
                         monthlyExpenseTrackerId={localStorage.getItem('monthlyExpenseTrackerId')}/>
+                        {/* <div>supriya</div> */}
                     </Route>
                     <Route path="/expense-tracker">
                         <Expense yearName={localStorage.getItem('yearName')}
@@ -536,6 +546,12 @@ export default function Dashboard(props: any) {
                     </Route>
                     <Route path="/income-tracker">
                         <Income yearName={localStorage.getItem('yearName')}
+                        month={localStorage.getItem('month')} userId={localStorage.getItem('userId')}
+                        monthlyExpenseTrackerId={localStorage.getItem('monthlyExpenseTrackerId')}
+                        monthlyIncomeTrackerId={localStorage.getItem('monthlyIncomeTrackerId')} />
+                    </Route>
+                    <Route path="/overall-tracker">
+                        <AllTracker yearName={localStorage.getItem('yearName')}
                         month={localStorage.getItem('month')} userId={localStorage.getItem('userId')}
                         monthlyExpenseTrackerId={localStorage.getItem('monthlyExpenseTrackerId')}
                         monthlyIncomeTrackerId={localStorage.getItem('monthlyIncomeTrackerId')} />
